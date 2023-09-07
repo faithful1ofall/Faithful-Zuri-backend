@@ -22,7 +22,7 @@ app.get('/api', (req, res) => {
     current_day: currentDay,
     utc_time: utcTime,
     track: track,
-    github_file_url: 'https://github.com/faithful1ofall/Faithful-Zuri-backend/blob/main/src/index.js, https://github.com/faithful1ofall/Faithful-Zuri-backend/blob/main/src/app.js',
+    github_file_url: 'https://github.com/faithful1ofall/Faithful-Zuri-backend/blob/main/src/app.js',
     github_repo_url: 'https://github.com/faithful1ofall/Faithful-Zuri-backend',
     status_code: '200',
   };
