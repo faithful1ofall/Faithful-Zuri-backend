@@ -52,7 +52,7 @@ app.post('/api/persons', (req, res) => {
   // For Firebase integration, replace the above code with database operations
 
    const newPersonRef = db.ref('persons').push();
-  newPersonRef.set({ name, age }, (error) => {
+  newPersonRef.set({ name, value }, (error) => {
     if (error) {
       res.status(500).json({ error: 'Error adding person' });
     } else {
