@@ -1,5 +1,5 @@
 const express = require('express');
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin');
 
 /*const serviceAccount = {
   "type": process.env.FIREBASE_TYPE,
@@ -14,13 +14,13 @@ const admin = require('firebase-admin');
   "universe_domain": process.env.FIREBASE_UNIVERSE_DOMAIN,
 };*/
 
-admin.initializeApp({
+/*admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE_URL,
-});
+});*/
 
 const app = express();
-const db = admin.database();
+// const db = admin.database();
 
 app.use(express.json());
 
@@ -39,14 +39,14 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: 'Invalid data' });
   }
 
-  const newPersonRef = db.ref('persons').push();
+ /* const newPersonRef = db.ref('persons').push();
   newPersonRef.set({ name, age }, (error) => {
     if (error) {
       res.status(500).json({ error: 'Error adding person' });
     } else {
       res.status(201).json({ message: 'Person added successfully' });
     }
-  });
+  });*/
 });
 
 app.get('/api/task1', (req, res) => {
