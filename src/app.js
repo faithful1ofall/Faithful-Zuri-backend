@@ -34,7 +34,7 @@ app.get('/api', (req, res) => {
 });
 
 // Create a list to store persons (temporary in-memory storage)
-const persons = [];
+// const persons = [];
 
 // POST - Create a new person
 /*app.post('/api/persons', (req, res) => {
@@ -83,16 +83,13 @@ app.post('/api/persons', (req, res) => {
 });
 // GET - Read all persons
 app.get('/api/persons', (req, res) => {
-  // For Firebase integration, replace the following code with database retrieval
-
-   const personsRef = db.ref('persons');
+  const personsRef = db.ref('persons');
+  
   personsRef.once('value', (snapshot) => {
     const personsData = snapshot.val();
     const personsList = Object.keys(personsData).map((key) => personsData[key]);
     res.status(200).json(personsList);
   }); 
-
-  res.status(200).json(persons);
 });
 
 // GET - Read a specific person by ID
