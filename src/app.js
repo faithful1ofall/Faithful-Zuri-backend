@@ -37,7 +37,8 @@ const persons = [];
 
 // POST - Create a new person
 app.post('/api/persons', (req, res) => {
-  const { name, value } = req.body;
+  const  name = req.body.name;
+  const value = req.body.value;
 
   if (typeof name !== 'string' || typeof value !== 'string') {
     return res.status(400).json({ error: 'Invalid data' });
