@@ -1,7 +1,7 @@
 const express = require('express');
 // const admin = require('firebase-admin');
 
-/* const serviceAccount = {
+ const serviceAccount = {
   "type": process.env.FIREBASE_TYPE,
   "project_id": process.env.FIREBASE_PROJECT_ID,
   "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
@@ -12,15 +12,15 @@ const express = require('express');
   "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
   "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
   "universe_domain": process.env.FIREBASE_UNIVERSE_DOMAIN,
-}; */
+}; 
 
-/* admin.initializeApp({
+ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.DATABASE_URL,
-}); */
+}); 
 
 const app = express();
-// const db = admin.database();
+const db = admin.database();
 
 app.use(express.json());
 
@@ -50,14 +50,14 @@ app.post('/api/persons', (req, res) => {
 
   // For Firebase integration, replace the above code with database operations
 
-  /* const newPersonRef = db.ref('persons').push();
+   const newPersonRef = db.ref('persons').push();
   newPersonRef.set({ name, age }, (error) => {
     if (error) {
       res.status(500).json({ error: 'Error adding person' });
     } else {
       res.status(201).json({ message: 'Person added successfully' });
     }
-  }); */
+  }); 
   res.status(201).json({ message: 'Person added successfully' });
 });
 
@@ -65,12 +65,12 @@ app.post('/api/persons', (req, res) => {
 app.get('/api/persons', (req, res) => {
   // For Firebase integration, replace the following code with database retrieval
 
-  /* const personsRef = db.ref('persons');
+   const personsRef = db.ref('persons');
   personsRef.once('value', (snapshot) => {
     const personsData = snapshot.val();
     const personsList = Object.keys(personsData).map((key) => personsData[key]);
     res.status(200).json(personsList);
-  }); */
+  }); 
 
   res.status(200).json(persons);
 });
@@ -81,7 +81,7 @@ app.get('/api/persons/:id', (req, res) => {
 
   // For Firebase integration, replace the following code with database retrieval by ID
 
-  /* const personRef = db.ref(`persons/${personId}`);
+   const personRef = db.ref(`persons/${personId}`);
   personRef.once('value', (snapshot) => {
     const personData = snapshot.val();
     if (personData) {
@@ -89,7 +89,7 @@ app.get('/api/persons/:id', (req, res) => {
     } else {
       res.status(404).json({ error: 'Person not found' });
     }
-  }); */
+  }); 
 
   const foundPerson = persons.find((person) => person.id === personId);
   if (foundPerson) {
@@ -106,14 +106,14 @@ app.put('/api/persons/:id', (req, res) => {
 
   // For Firebase integration, replace the following code with database update by ID
 
-  /* const personRef = db.ref(`persons/${personId}`);
+   const personRef = db.ref(`persons/${personId}`);
   personRef.update({ name, age }, (error) => {
     if (error) {
       res.status(500).json({ error: 'Error updating person' });
     } else {
       res.status(200).json({ message: 'Person updated successfully' });
     }
-  }); */
+  }); 
 
   const foundIndex = persons.findIndex((person) => person.id === personId);
   if (foundIndex !== -1) {
@@ -130,14 +130,14 @@ app.delete('/api/persons/:id', (req, res) => {
 
   // For Firebase integration, replace the following code with database deletion by ID
 
-  /* const personRef = db.ref(`persons/${personId}`);
+   const personRef = db.ref(`persons/${personId}`);
   personRef.remove((error) => {
     if (error) {
       res.status(500).json({ error: 'Error deleting person' });
     } else {
       res.status(200).json({ message: 'Person deleted successfully' });
     }
-  }); */
+  }); 
 
   const foundIndex = persons.findIndex((person) => person.id === personId);
   if (foundIndex !== -1) {
