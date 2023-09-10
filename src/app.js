@@ -28,6 +28,10 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
 });
 
+app.get('/api', (req, res) => {
+  res.send('Welcome to the Zuri Faithfuls First backend the api starts here');
+});
+
 app.post('/api/persons', (req, res) => {
   const { name, age } = req.body;
 
@@ -45,7 +49,7 @@ app.post('/api/persons', (req, res) => {
   });
 });
 
-app.get('/api1', (req, res) => {
+app.get('/api/task1', (req, res) => {
   const slackName = req.query.slack_name;
   const track = req.query.track;
   const currentDate = new Date();
