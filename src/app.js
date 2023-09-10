@@ -25,7 +25,7 @@ const db = admin.database();
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Welcome to the Zuri Faithfuls First backend');
+  res.send('Welcome to the Zuri Faithfuls backend');
 });
 
 app.post('/api/persons', (req, res) => {
