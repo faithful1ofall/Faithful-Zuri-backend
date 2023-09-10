@@ -37,14 +37,14 @@ const persons = [];
 
 // POST - Create a new person
 app.post('/api/persons', (req, res) => {
-  const { name, age } = req.body;
+  const { name, value } = req.body;
 
-  if (!name || typeof age !== 'number') {
+  if (typeof name != 'string' || typeof value != 'string') {
     return res.status(400).json({ error: 'Invalid data' });
   }
 
   // Create a new person object and push it to the list
-  const newPerson = { name, age };
+  const newPerson = { name, value };
   persons.push(newPerson);
 
   // For Firebase integration, replace the above code with database operations
@@ -101,7 +101,7 @@ app.get('/api/persons/:id', (req, res) => {
 // PUT - Update a person by ID
 app.put('/api/persons/:id', (req, res) => {
   const personId = req.params.id;
-  const { name, age } = req.body;
+  const { name, value } = req.body;
 
   // For Firebase integration, replace the following code with database update by ID
 
@@ -116,7 +116,7 @@ app.put('/api/persons/:id', (req, res) => {
 
   const foundIndex = persons.findIndex((person) => person.id === personId);
   if (foundIndex !== -1) {
-    persons[foundIndex] = { ...persons[foundIndex], name, age };
+    persons[foundIndex] = { ...persons[foundIndex], name, value };
     res.status(200).json({ message: 'Person updated successfully' });
   } else {
     res.status(404).json({ error: 'Person not found' });
