@@ -37,7 +37,7 @@ app.get('/api', (req, res) => {
 const persons = [];
 
 // POST - Create a new person
-app.post('/api/persons', (req, res) => {
+/*app.post('/api/persons', (req, res) => {
   const  name = req.body.name;
   const value = req.body.value;
 
@@ -60,8 +60,27 @@ app.post('/api/persons', (req, res) => {
     }
   }); 
   res.status(201).json({ message: 'Person added successfully' });
-});
+});*/
+app.post('/api/persons', (req, res) => {
+  const name = req.body.name;
+  const value = req.body.value;
 
+  if (typeof name !== 'string' || typeof value !== 'string') {
+    return res.status(400).json({ error: 'Invalid data' });
+  }
+
+  // For Firebase integration, replace the above code with database operations
+  const newPersonRef = db.ref('persons').push();
+  
+  newPersonRef.set({ name, value }, (error) => {
+    if (error) {
+      console.error('Firebase Error:', error); // Log the Firebase error
+      return res.status(500).json({ error: 'Error adding person' });
+    } else {
+      return res.status(201).json({ message: 'Person added successfully' });
+    }
+  });
+});
 // GET - Read all persons
 app.get('/api/persons', (req, res) => {
   // For Firebase integration, replace the following code with database retrieval
