@@ -16,7 +16,7 @@ const serviceAccount = {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://faithful-ads.firebaseio.com',
+  databaseURL: process.env.DATABASE_URL,
 });
 
 const app = express();
