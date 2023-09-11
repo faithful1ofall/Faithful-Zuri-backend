@@ -33,8 +33,6 @@ app.get('/api', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls First backend; the API starts here');
 });
 
-let nextId = 1; // Initialize the next ID
-
 app.post('/api/persons', (req, res) => {
   const { name, value } = req.body;
 
@@ -42,19 +40,33 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: 'Invalid data' });
   }
 
-  const newPersonRef = db.ref('persons').push();
+  const personsRef = db.ref('persons');
 
-  // Generate a new ID and increment nextId
-  const id = nextId++;
-  
-  newPersonRef.set({ id, name, value }, (error) => {
-    if (error) {
-      console.error('Firebase Error:', error);
-      return res.status(500).json({ error: 'Error adding person' });
-    } else {
-      return res.status(201).json({ message: 'Person added successfully', id: newId });
-    }
-  });
+  // Retrieve the last person's ID from the database
+  personsRef
+    .orderByKey()
+    .limitToLast(1)
+    .once('value', (snapshot) => {
+      let lastId = 0;
+
+      snapshot.forEach((childSnapshot) => {
+        lastId = parseInt(childSnapshot.key);
+      });
+
+      // Generate a new ID by adding 1 to the last ID
+      const newId = lastId + 1;
+
+      // Create a new person with the new ID
+      const newPersonRef = personsRef.child(newId);
+      newPersonRef.set({ id: newId, name, value }, (error) => {
+        if (error) {
+          console.error('Firebase Error:', error);
+          return res.status(500).json({ error: 'Error adding person' });
+        } else {
+          return res.status(201).json({ message: 'Person added successfully', id: newId });
+        }
+      });
+    });
 });
 
 // GET - Read all persons
