@@ -75,16 +75,6 @@ You can use this backend to perform various operations on persons and retrieve t
 - **Response**:
   - 200 OK: Task information.
 
-## Contributing
+## Documentation
 
-Contributions are welcome! If you'd like to contribute to this project, please follow these guidelines:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them with clear and concise commit messages.
-4. Push your changes to your fork.
-5. Submit a pull request with a description of your changes.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+For detailed information on how to set up and use the API, please refer to the [DOCUMENTATION.md](DOCUMENTATION.md) file.
