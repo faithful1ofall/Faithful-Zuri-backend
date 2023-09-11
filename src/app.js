@@ -60,13 +60,14 @@ app.post('/api/persons', (req, res) => {
       // Create a new person with the new ID
       
       newPersonRef.set({ id, name, value }, (error) => {
-        if (error) {
-          console.error('Firebase Error:', error);
-          return res.status(500).json({ error: 'Error adding person' });
-        } else {
-          return res.status(201).json({ message: 'Person added successfully', id: newId });
-        }
-      });
+    if (error) {
+      console.error('Firebase Error:', error);
+      return res.status(500).json({ error: 'Error adding person' });
+    } else {
+      // Return the correct ID variable
+      return res.status(201).json({ message: 'Person added successfully', id });
+    }
+  });
     });
 });
 
@@ -135,7 +136,6 @@ app.delete('/api/persons/:id', (req, res) => {
   const personId = req.params.id;
 
   // For Firebase integration, replace the following code with database deletion by ID
-
    const personRef = db.ref(`persons/${personId}`);
   personRef.remove((error) => {
     if (error) {
