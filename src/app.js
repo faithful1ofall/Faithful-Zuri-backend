@@ -58,7 +58,7 @@ app.post('/api/persons', (req, res) => {
       const id = lastId + 1;
 
       // Create a new person with the new ID
-      
+      const newPersonRef = personsRef.child(id);
       newPersonRef.set({ id, name, value }, (error) => {
     if (error) {
       console.error('Firebase Error:', error);
