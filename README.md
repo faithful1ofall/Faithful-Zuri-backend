@@ -7,8 +7,7 @@ This is the backend for the Zuri Faithfuls project. It provides API endpoints fo
 - [Introduction](#introduction)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Introduction
 
