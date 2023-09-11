@@ -153,18 +153,58 @@ app.put('/api/:input', (req, res) => {
   }
 });
 
-// DELETE - Delete a person by ID
-app.delete('/api/:id', (req, res) => {
-  const personId = req.params.id;
+// DELETE - Delete a person by Input
+app.delete('/api/:input', (req, res) => {
+  const input = req.params.input;
 
-  const personRef = db.ref(`persons/${personId}`);
-  personRef.remove((error) => {
-    if (error) {
-      res.status(500).json({ error: 'Error deleting person' });
-    } else {
-      res.status(200).json({ message: 'Person deleted successfully' });
-    }
-  });
+  // For Firebase integration, replace the following code with appropriate database logic
+  const personsRef = db.ref('persons');
+
+  // Check if the provided input is a number (ID), a string (name), or a string (value)
+  if (!isNaN(input)) {
+    // If it's a number, treat it as an ID
+    const personId = parseInt(input);
+    const personRef = db.ref(`persons/${personId}`);
+    personRef.remove((error) => {
+      if (error) {
+        res.status(500).json({ error: 'Error deleting person based on ID' });
+      } else {
+        res.status(200).json({ message: 'Person deleted successfully based on ID' });
+      }
+    });
+  } else {
+    // If it's not a number, treat it as a name or value
+    const nameQueryField = 'name';
+    const valueQueryField = 'value';
+
+    // Query the database to find all persons with the provided name or value and delete them
+    personsRef.orderByChild(nameQueryField).equalTo(input).once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const personIdToDelete = childSnapshot.key;
+          const personRefToDelete = db.ref(`persons/${personIdToDelete}`);
+          personRefToDelete.remove();
+        });
+
+        res.status(200).json({ message: 'All matching persons deleted successfully based on name' });
+      } else {
+        // If no persons match the name, try searching based on value
+        personsRef.orderByChild(valueQueryField).equalTo(input).once('value', (valueSnapshot) => {
+          if (valueSnapshot.exists()) {
+            valueSnapshot.forEach((childSnapshot) => {
+              const personIdToDelete = childSnapshot.key;
+              const personRefToDelete = db.ref(`persons/${personIdToDelete}`);
+              personRefToDelete.remove();
+            });
+
+            res.status(200).json({ message: 'All matching persons deleted successfully based on value' });
+          } else {
+            res.status(404).json({ error: 'No persons found based on the provided name or value' });
+          }
+        });
+      }
+    });
+  }
 });
 
 
