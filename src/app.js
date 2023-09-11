@@ -33,63 +33,39 @@ app.get('/api', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls First backend; the API starts here');
 });
 
-// Create a list to store persons (temporary in-memory storage)
-// const persons = [];
+let nextId = 1; // Initialize the next ID
 
-// POST - Create a new person
-/*app.post('/api/persons', (req, res) => {
-  const  name = req.body.name;
-  const value = req.body.value;
-
-  if (typeof name !== 'string' || typeof value !== 'string') {
-    return res.status(400).json({ error: 'Invalid data' });
-  }
-
-  // Create a new person object and push it to the list
-  const newPerson = { name, value };
-  persons.push(newPerson);
-
-  // For Firebase integration, replace the above code with database operations
-
-   const newPersonRef = db.ref('persons').push();
-  newPersonRef.set({ name, value }, (error) => {
-    if (error) {
-      res.status(500).json({ error: 'Error adding person' });
-    } else {
-      res.status(201).json({ message: 'Person added successfully' });
-    }
-  }); 
-  res.status(201).json({ message: 'Person added successfully' });
-});*/
 app.post('/api/persons', (req, res) => {
-  const name = req.body.name;
-  const value = req.body.value;
+  const { name, value } = req.body;
 
   if (typeof name !== 'string' || typeof value !== 'string') {
     return res.status(400).json({ error: 'Invalid data' });
   }
 
-  // For Firebase integration, replace the above code with database operations
   const newPersonRef = db.ref('persons').push();
+
+  // Generate a new ID and increment nextId
+  const newId = nextId++;
   
-  newPersonRef.set({ name, value }, (error) => {
+  newPersonRef.set({ id: newId, name, value }, (error) => {
     if (error) {
-      console.error('Firebase Error:', error); // Log the Firebase error
+      console.error('Firebase Error:', error);
       return res.status(500).json({ error: 'Error adding person' });
     } else {
-      return res.status(201).json({ message: 'Person added successfully' });
+      return res.status(201).json({ message: 'Person added successfully', id: newId });
     }
   });
 });
+
 // GET - Read all persons
 app.get('/api/persons', (req, res) => {
   const personsRef = db.ref('persons');
   
   personsRef.once('value', (snapshot) => {
     const personsData = snapshot.val();
-    const personsList = Object.keys(personsData).map((key) => personsData[key]);
+    const personsList = Object.keys(personsData).map((key, index) => ({ id: index + 1, ...personsData[key] }));
     res.status(200).json(personsList);
-  }); 
+  });
 });
 
 // GET - Read a specific person by ID
