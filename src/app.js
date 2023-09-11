@@ -114,12 +114,13 @@ app.put('/api/:input', (req, res) => {
     });
   } else {
     // If it's not a number, treat it as a name or value
-    // For example, update persons based on name
-    const queryField = isNaN(value) ? 'name' : 'value'; // Determine whether to search by name or value
-    const queryValue = input;
+    // For example, update persons based on name and value
+    const nameQueryField = 'name';
+    const valueQueryField = 'value';
+    const queryNameValue = input;
 
-    // Query the database to find the person(s) with the provided name or value and update them
-    personsRef.orderByChild(queryField).equalTo(queryValue).once('value', (snapshot) => {
+    // Query the database to find the person(s) with the provided name and value and update them
+    personsRef.orderByChild(nameQueryField).equalTo(queryNameValue).once('value', (snapshot) => {
       if (snapshot.exists()) {
         snapshot.forEach((childSnapshot) => {
           const personIdToUpdate = childSnapshot.key;
@@ -130,9 +131,25 @@ app.put('/api/:input', (req, res) => {
           personRefToUpdate.update(updatedPerson);
         });
 
-        res.status(200).json({ message: 'Person(s) updated successfully based on name or value' });
+        res.status(200).json({ message: 'Person(s) updated successfully based on name and value' });
       } else {
-        res.status(404).json({ error: 'Person(s) not found based on name or value' });
+        // If no match was found based on name, try searching based on value
+        personsRef.orderByChild(valueQueryField).equalTo(queryNameValue).once('value', (valueSnapshot) => {
+          if (valueSnapshot.exists()) {
+            valueSnapshot.forEach((childSnapshot) => {
+              const personIdToUpdate = childSnapshot.key;
+              const personToUpdate = childSnapshot.val();
+              const updatedPerson = { ...personToUpdate, name, value };
+              
+              const personRefToUpdate = db.ref(`persons/${personIdToUpdate}`);
+              personRefToUpdate.update(updatedPerson);
+            });
+
+            res.status(200).json({ message: 'Person(s) updated successfully based on value' });
+          } else {
+            res.status(404).json({ error: 'Person(s) not found based on name or value' });
+          }
+        });
       }
     });
   }
