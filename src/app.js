@@ -92,19 +92,50 @@ app.get('/api/:id', (req, res) => {
     }
   });
 });
-// PUT - Update a person by ID
-app.put('/api/:id', (req, res) => {
-  const personId = req.params.id;
+// PUT - Update a person by input
+app.put('/api/:input', (req, res) => {
+  const input = req.params.input;
   const { name, value } = req.body;
 
-  const personRef = db.ref(`persons/${personId}`);
-  personRef.update({ name, value }, (error) => {
-    if (error) {
-      res.status(500).json({ error: 'Error updating person' });
-    } else {
-      res.status(200).json({ message: 'Person updated successfully' });
-    }
-  });
+  // For Firebase integration, replace the following code with appropriate database logic
+  const personsRef = db.ref('persons');
+
+  // Check if the provided input is a number (ID), a string (name), or a string (value)
+  if (!isNaN(input)) {
+    // If it's a number, treat it as an ID
+    const personId = parseInt(input);
+    const personRef = db.ref(`persons/${personId}`);
+    personRef.update({ name, value }, (error) => {
+      if (error) {
+        res.status(500).json({ error: 'Error updating person' });
+      } else {
+        res.status(200).json({ message: 'Person updated successfully based on ID' });
+      }
+    });
+  } else {
+    // If it's not a number, treat it as a name or value
+    // For example, update persons based on name
+    const queryField = isNaN(value) ? 'name' : 'value'; // Determine whether to search by name or value
+    const queryValue = input;
+
+    // Query the database to find the person(s) with the provided name or value and update them
+    personsRef.orderByChild(queryField).equalTo(queryValue).once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const personIdToUpdate = childSnapshot.key;
+          const personToUpdate = childSnapshot.val();
+          const updatedPerson = { ...personToUpdate, name, value };
+          
+          const personRefToUpdate = db.ref(`persons/${personIdToUpdate}`);
+          personRefToUpdate.update(updatedPerson);
+        });
+
+        res.status(200).json({ message: 'Person(s) updated successfully based on name or value' });
+      } else {
+        res.status(404).json({ error: 'Person(s) not found based on name or value' });
+      }
+    });
+  }
 });
 
 // DELETE - Delete a person by ID
