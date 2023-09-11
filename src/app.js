@@ -45,9 +45,9 @@ app.post('/api/persons', (req, res) => {
   const newPersonRef = db.ref('persons').push();
 
   // Generate a new ID and increment nextId
-  const newId = nextId++;
+  const id = nextId++;
   
-  newPersonRef.set({ id: newId, name, value }, (error) => {
+  newPersonRef.set({ id, name, value }, (error) => {
     if (error) {
       console.error('Firebase Error:', error);
       return res.status(500).json({ error: 'Error adding person' });
