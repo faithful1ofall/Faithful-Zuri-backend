@@ -51,7 +51,7 @@ app.post('/api/persons', (req, res) => {
       let lastId = 0;
 
       snapshot.forEach((childSnapshot) => {
-        lastId = parseInt(childSnapshot.key);
+        lastId = parseInt(childSnapshot.val().id);
       });
 
       // Generate a new ID by adding 1 to the last ID
