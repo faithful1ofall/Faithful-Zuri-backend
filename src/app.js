@@ -29,11 +29,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
 });
 
-app.get('/api', (req, res) => {
-  res.send('Welcome to the Zuri Faithfuls First backend; the API starts here');
-});
-
-app.post('/api/persons', (req, res) => {
+app.post('/api', (req, res) => {
   const name = req.body.name;
  const value = req.body.value;
 
@@ -72,7 +68,7 @@ app.post('/api/persons', (req, res) => {
 });
 
 // GET - Read all persons
-app.get('/api/persons', (req, res) => {
+app.get('/api', (req, res) => {
   const personsRef = db.ref('persons');
   
   personsRef.once('value', (snapshot) => {
@@ -83,7 +79,7 @@ app.get('/api/persons', (req, res) => {
 });
 
 // GET - Read a specific person by ID
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/:id', (req, res) => {
   const personId = req.params.id;
 
   const personRef = db.ref(`persons/${personId}`);
@@ -97,51 +93,32 @@ app.get('/api/persons/:id', (req, res) => {
   });
 });
 // PUT - Update a person by ID
-app.put('/api/persons/:id', (req, res) => {
+app.put('/api/:id', (req, res) => {
   const personId = req.params.id;
   const { name, value } = req.body;
 
-  // For Firebase integration, replace the following code with database update by ID
-
-   const personRef = db.ref(`persons/${personId}`);
-  personRef.update({ name, age }, (error) => {
+  const personRef = db.ref(`persons/${personId}`);
+  personRef.update({ name, value }, (error) => {
     if (error) {
       res.status(500).json({ error: 'Error updating person' });
     } else {
       res.status(200).json({ message: 'Person updated successfully' });
     }
-  }); 
-
-  const foundIndex = persons.findIndex((person) => person.id === personId);
-  if (foundIndex !== -1) {
-    persons[foundIndex] = { ...persons[foundIndex], name, value };
-    res.status(200).json({ message: 'Person updated successfully' });
-  } else {
-    res.status(404).json({ error: 'Person not found' });
-  }
+  });
 });
 
 // DELETE - Delete a person by ID
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/:id', (req, res) => {
   const personId = req.params.id;
 
-  // For Firebase integration, replace the following code with database deletion by ID
-   const personRef = db.ref(`persons/${personId}`);
+  const personRef = db.ref(`persons/${personId}`);
   personRef.remove((error) => {
     if (error) {
       res.status(500).json({ error: 'Error deleting person' });
     } else {
       res.status(200).json({ message: 'Person deleted successfully' });
     }
-  }); 
-
-  const foundIndex = persons.findIndex((person) => person.id === personId);
-  if (foundIndex !== -1) {
-    persons.splice(foundIndex, 1);
-    res.status(200).json({ message: 'Person deleted successfully' });
-  } else {
-    res.status(404).json({ error: 'Person not found' });
-  }
+  });
 });
 
 
