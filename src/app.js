@@ -78,20 +78,61 @@ app.get('/api', (req, res) => {
   });
 });
 
-// GET - Read a specific person by ID
-app.get('/api/:id', (req, res) => {
-  const personId = req.params.id;
+// GET - Read a specific person by Input
+app.get('/api/:input', (req, res) => {
+  const input = req.params.input;
 
-  const personRef = db.ref(`persons/${personId}`);
-  personRef.once('value', (snapshot) => {
-    const personData = snapshot.val();
-    if (personData) {
-      res.status(200).json({ id: personId, ...personData });
-    } else {
-      res.status(404).json({ error: 'Person not found' });
-    }
-  });
+  // For Firebase integration, replace the following code with appropriate database logic
+  const personsRef = db.ref('persons');
+
+  // Check if the provided input is a number (ID), a string (name), or a string (value)
+  if (!isNaN(input)) {
+    // If it's a number, treat it as an ID
+    const personId = parseInt(input);
+    const personRef = db.ref(`persons/${personId}`);
+    personRef.once('value', (snapshot) => {
+      const personData = snapshot.val();
+      if (personData) {
+        res.status(200).json({ id: personId, ...personData });
+      } else {
+        res.status(404).json({ error: 'Person not found based on ID' });
+      }
+    });
+  } else {
+    // If it's not a number, treat it as a name or value
+    const nameQueryField = 'name';
+    const valueQueryField = 'value';
+
+    // Query the database to find all persons with the provided name or value
+    personsRef.orderByChild(nameQueryField).equalTo(input).once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        const matchingPersons = [];
+        snapshot.forEach((childSnapshot) => {
+          const personId = childSnapshot.key;
+          const personData = childSnapshot.val();
+          matchingPersons.push({ id: personId, ...personData });
+        });
+        res.status(200).json(matchingPersons);
+      } else {
+        // If no persons match the name, try searching based on value
+        personsRef.orderByChild(valueQueryField).equalTo(input).once('value', (valueSnapshot) => {
+          if (valueSnapshot.exists()) {
+            const matchingPersons = [];
+            valueSnapshot.forEach((childSnapshot) => {
+              const personId = childSnapshot.key;
+              const personData = childSnapshot.val();
+              matchingPersons.push({ id: personId, ...personData });
+            });
+            res.status(200).json(matchingPersons);
+          } else {
+            res.status(404).json({ error: 'No persons found based on the provided name or value' });
+          }
+        });
+      }
+    });
+  }
 });
+
 // PUT - Update a person by input
 app.put('/api/:input', (req, res) => {
   const input = req.params.input;
