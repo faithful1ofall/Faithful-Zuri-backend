@@ -114,13 +114,11 @@ app.put('/api/:input', (req, res) => {
     });
   } else {
     // If it's not a number, treat it as a name or value
-    // For example, update persons based on name and value
     const nameQueryField = 'name';
     const valueQueryField = 'value';
-    const queryNameValue = input;
 
-    // Query the database to find the person(s) with the provided name and value and update them
-    personsRef.orderByChild(nameQueryField).equalTo(queryNameValue).once('value', (snapshot) => {
+    // Query the database to find all persons with the provided name or value and update them
+    personsRef.orderByChild(nameQueryField).equalTo(input).once('value', (snapshot) => {
       if (snapshot.exists()) {
         snapshot.forEach((childSnapshot) => {
           const personIdToUpdate = childSnapshot.key;
@@ -131,10 +129,10 @@ app.put('/api/:input', (req, res) => {
           personRefToUpdate.update(updatedPerson);
         });
 
-        res.status(200).json({ message: 'Person(s) updated successfully based on name and value' });
+        res.status(200).json({ message: 'All matching persons updated successfully based on name' });
       } else {
-        // If no match was found based on name, try searching based on value
-        personsRef.orderByChild(valueQueryField).equalTo(queryNameValue).once('value', (valueSnapshot) => {
+        // If no persons match the name, try searching based on value
+        personsRef.orderByChild(valueQueryField).equalTo(input).once('value', (valueSnapshot) => {
           if (valueSnapshot.exists()) {
             valueSnapshot.forEach((childSnapshot) => {
               const personIdToUpdate = childSnapshot.key;
@@ -145,9 +143,9 @@ app.put('/api/:input', (req, res) => {
               personRefToUpdate.update(updatedPerson);
             });
 
-            res.status(200).json({ message: 'Person(s) updated successfully based on value' });
+            res.status(200).json({ message: 'All matching persons updated successfully based on value' });
           } else {
-            res.status(404).json({ error: 'Person(s) not found based on name or value' });
+            res.status(404).json({ error: 'No persons found based on the provided name or value' });
           }
         });
       }
