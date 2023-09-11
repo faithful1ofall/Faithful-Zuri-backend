@@ -77,7 +77,7 @@ app.get('/api/persons', (req, res) => {
   
   personsRef.once('value', (snapshot) => {
     const personsData = snapshot.val();
-    const personsList = Object.keys(personsData).map((key, index) => ({ id: index + 1, ...personsData[key] }));
+    const personsList = Object.keys(personsData).map((key, index) => ({ id, ...personsData[key] }));
     res.status(200).json(personsList);
   });
 });
