@@ -45,7 +45,7 @@ app.post('/api/persons', (req, res) => {
 
   // Retrieve the last person's ID from the database
   personsRef
-    .orderByKey()
+    .orderByChild('id')
     .limitToLast(1)
     .once('value', (snapshot) => {
       let lastId = 0;
