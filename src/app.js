@@ -77,7 +77,7 @@ app.get('/api/persons', (req, res) => {
   
   personsRef.once('value', (snapshot) => {
     const personsData = snapshot.val();
-    const personsList = Object.keys(personsData).map((key, index) => ({ id, ...personsData[key] }));
+    const personsList = Object.keys(personsData).map((key) => ({ id: key, ...personsData[key] }));
     res.status(200).json(personsList);
   });
 });
@@ -86,26 +86,16 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (req, res) => {
   const personId = req.params.id;
 
-  // For Firebase integration, replace the following code with database retrieval by ID
-
-   const personRef = db.ref(`persons/${personId}`);
+  const personRef = db.ref(`persons/${personId}`);
   personRef.once('value', (snapshot) => {
     const personData = snapshot.val();
     if (personData) {
-      res.status(200).json(personData);
+      res.status(200).json({ id: personId, ...personData });
     } else {
       res.status(404).json({ error: 'Person not found' });
     }
-  }); 
-
-  const foundPerson = persons.find((person) => person.id === personId);
-  if (foundPerson) {
-    res.status(200).json(foundPerson);
-  } else {
-    res.status(404).json({ error: 'Person not found' });
-  }
+  });
 });
-
 // PUT - Update a person by ID
 app.put('/api/persons/:id', (req, res) => {
   const personId = req.params.id;
