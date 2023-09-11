@@ -26,7 +26,7 @@ The Zuri Faithfuls Backend API is designed to manage persons and provide informa
 The base URL for all API endpoints is:
 
 ```
-https://your-api-url.com
+https://faithful-zuri-backend.vercel.app
 ```
 
 ## Authentication
