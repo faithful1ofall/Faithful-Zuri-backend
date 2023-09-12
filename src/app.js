@@ -34,7 +34,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api', (req, res) => {
-  const { name, value } = req.body;
+  const { name } = req.body;
+  const { value } = req.body;
 
   if (typeof name !== 'string' || typeof value !== 'string') {
     return res.status(400).json({ error: 'Invalid data' });
