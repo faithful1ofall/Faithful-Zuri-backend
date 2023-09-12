@@ -1,5 +1,6 @@
 const express = require('express');
 const admin = require('firebase-admin');
+const bodyParser = require('body-parser');
 
  const serviceAccount = {
   "type": process.env.FIREBASE_TYPE,
