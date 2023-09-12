@@ -24,16 +24,17 @@ const bodyParser = require('body-parser');
 const app = express();
 const db = admin.database();
 
-app.use(express.json());
+app.use(express.static("public"));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.disable("x-powered-by");
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
 });
 
 app.post('/api', (req, res) => {
-  const name = req.body.name;
- const value = req.body.value;
+  const { name, value } = req.body;
 
   if (typeof name !== 'string' || typeof value !== 'string') {
     return res.status(400).json({ error: 'Invalid data' });
