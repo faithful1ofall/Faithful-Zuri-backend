@@ -24,6 +24,7 @@ const app = express();
 const db = admin.database();
 
 app.use(express.json());
+app.use(bodyParser.text({ type: '*/*' }));
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
