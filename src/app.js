@@ -24,20 +24,20 @@ const bodyParser = require('body-parser');
 const app = express();
 const db = admin.database();
 
-app.use(express.static("public"));
-app.use(bodyParser.text());
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.disable("x-powered-by");
+//app.use(express.static("public"))
+ //app.use(bodyParser.text());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.disable("x-powered-by");
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
 });
 
 app.post('/api', (req, res) => {
- const rawBody = req.body;
- JSON.parse(rawBody);
-  const { name, value } = rawBody;
+// const rawBody = req.body;
+// JSON.parse(rawBody);
+  const { name } = req.body;
  // const { value } = req.body;
 
 
@@ -140,7 +140,7 @@ app.get('/api/:input', (req, res) => {
 // PUT - Update a person by input
 app.put('/api/:input', (req, res) => {
   const input = req.params.input;
-  const { name, value } = req.body;
+  const { name } = req.body;
 
   // For Firebase integration, replace the following code with appropriate database logic
   const personsRef = db.ref('persons');
