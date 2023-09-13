@@ -150,7 +150,7 @@ app.put('/api/:input', (req, res) => {
     // If it's a number, treat it as an ID
     const personId = parseInt(input);
     const personRef = db.ref(`persons/${personId}`);
-    personRef.update({ name, value }, (error) => {
+    personRef.update({ name }, (error) => {
       if (error) {
         res.status(500).json({ error: 'Error updating person' });
       } else {
@@ -168,7 +168,7 @@ app.put('/api/:input', (req, res) => {
         snapshot.forEach((childSnapshot) => {
           const personIdToUpdate = childSnapshot.key;
           const personToUpdate = childSnapshot.val();
-          const updatedPerson = { ...personToUpdate, name, value };
+          const updatedPerson = { ...personToUpdate, name };
           
           const personRefToUpdate = db.ref(`persons/${personIdToUpdate}`);
           personRefToUpdate.update(updatedPerson);
