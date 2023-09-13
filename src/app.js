@@ -59,7 +59,7 @@ app.post('/api', (req, res) => {
 
       // Create a new person with the new ID
       const newPersonRef = personsRef.child(id);
-      newPersonRef.set({ id, name, value }, (error) => {
+      newPersonRef.set({ id, name }, (error) => {
     if (error) {
       console.error('Firebase Error:', error);
       return res.status(500).json({ error: 'Error adding person' });
@@ -105,7 +105,7 @@ app.get('/api/:input', (req, res) => {
   } else {
     // If it's not a number, treat it as a name or value
     const nameQueryField = 'name';
-    const valueQueryField = 'value';
+    // const valueQueryField = 'value';
 
     // Query the database to find all persons with the provided name or value
     personsRef.orderByChild(nameQueryField).equalTo(input).once('value', (snapshot) => {
@@ -117,7 +117,7 @@ app.get('/api/:input', (req, res) => {
           matchingPersons.push({ id: personId, ...personData });
         });
         res.status(200).json(matchingPersons);
-      } else {
+      } /* else {
         // If no persons match the name, try searching based on value
         personsRef.orderByChild(valueQueryField).equalTo(input).once('value', (valueSnapshot) => {
           if (valueSnapshot.exists()) {
@@ -128,8 +128,8 @@ app.get('/api/:input', (req, res) => {
               matchingPersons.push({ id: personId, ...personData });
             });
             res.status(200).json(matchingPersons);
-          } else {
-            res.status(404).json({ error: 'No persons found based on the provided name or value' });
+          } */else {
+            res.status(404).json({ error: 'No persons found based on the provided name' });
           }
         });
       }
@@ -160,7 +160,7 @@ app.put('/api/:input', (req, res) => {
   } else {
     // If it's not a number, treat it as a name or value
     const nameQueryField = 'name';
-    const valueQueryField = 'value';
+   // const valueQueryField = 'value';
 
     // Query the database to find all persons with the provided name or value and update them
     personsRef.orderByChild(nameQueryField).equalTo(input).once('value', (snapshot) => {
@@ -175,7 +175,7 @@ app.put('/api/:input', (req, res) => {
         });
 
         res.status(200).json({ message: 'All matching persons updated successfully based on name' });
-      } else {
+      } /* else {
         // If no persons match the name, try searching based on value
         personsRef.orderByChild(valueQueryField).equalTo(input).once('value', (valueSnapshot) => {
           if (valueSnapshot.exists()) {
@@ -189,8 +189,8 @@ app.put('/api/:input', (req, res) => {
             });
 
             res.status(200).json({ message: 'All matching persons updated successfully based on value' });
-          } else {
-            res.status(404).json({ error: 'No persons found based on the provided name or value' });
+          } */else {
+            res.status(404).json({ error: 'No persons found based on the provided name' });
           }
         });
       }
@@ -220,7 +220,7 @@ app.delete('/api/:input', (req, res) => {
   } else {
     // If it's not a number, treat it as a name or value
     const nameQueryField = 'name';
-    const valueQueryField = 'value';
+   // const valueQueryField = 'value';
 
     // Query the database to find all persons with the provided name or value and delete them
     personsRef.orderByChild(nameQueryField).equalTo(input).once('value', (snapshot) => {
@@ -232,7 +232,7 @@ app.delete('/api/:input', (req, res) => {
         });
 
         res.status(200).json({ message: 'All matching persons deleted successfully based on name' });
-      } else {
+      }/* else {
         // If no persons match the name, try searching based on value
         personsRef.orderByChild(valueQueryField).equalTo(input).once('value', (valueSnapshot) => {
           if (valueSnapshot.exists()) {
@@ -243,8 +243,8 @@ app.delete('/api/:input', (req, res) => {
             });
 
             res.status(200).json({ message: 'All matching persons deleted successfully based on value' });
-          } else {
-            res.status(404).json({ error: 'No persons found based on the provided name or value' });
+          }*/ else {
+            res.status(404).json({ error: 'No persons found based on the provided name' });
           }
         });
       }
