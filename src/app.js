@@ -134,7 +134,7 @@ app.get('/api/:input', (req, res) => {
         });
       }
     });
-  }
+//  }
 });
 
 // PUT - Update a person by input
