@@ -35,7 +35,9 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api', (req, res) => {
-  const { name, value } = req.body;
+ const rawBody = req.body;
+ JSON.parse(rawBody);
+  const { name, value } = rawBody;
  // const { value } = req.body;
 
 
