@@ -5,12 +5,12 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('CRUD Operations', () => {
+describe('CREATE/POST Operations', () => {
   it('should add a new person', (done) => {
     chai
       .request(app)
       .post('/api')
-      .send({ "name" : "John Doe" })
+      .send({ name: "Mark Essien" })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(201);
