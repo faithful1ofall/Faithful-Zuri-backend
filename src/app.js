@@ -26,9 +26,10 @@ const db = admin.database();
 
 //app.use(express.static("public"))
  //app.use(bodyParser.text());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.disable("x-powered-by");
+app.use(bodyParser.text({ type: '*/*' }));
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true }));
+//app.disable("x-powered-by");
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
