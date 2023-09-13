@@ -36,10 +36,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api', (req, res) => {
- const personData = JSON.parse(req.body);
- if (!personData || !personData.name) {
-    return res.status(500).json({ msg: 'Name field is required' });
- }
+ const personData = req.body;
+// if (!personData || !personData.name) {
+  //  return res.status(500).json({ msg: 'Name field is required' });
+// }
 // const rawBody = req.body;
 // JSON.parse(rawBody);
   const { name } = personData;
