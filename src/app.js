@@ -46,7 +46,7 @@ app.post('/api', (req, res) => {
   // Retrieve the last person's ID from the database
   personsRef
     .orderByChild('id')
-  //  .limitToLast(1)
+    .limitToLast(1)
     .once('value', (snapshot) => {
       let lastId = 0;
 
@@ -58,7 +58,7 @@ app.post('/api', (req, res) => {
       const id = lastId + 1;
 
       // Create a new person with the new ID
-      // const newPersonRef = personsRef.child(id);
+      const newPersonRef = personsRef.child(id);
       newPersonRef.set({ id, name }, (error) => {
     if (error) {
       console.error('Firebase Error:', error);
