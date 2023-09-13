@@ -24,25 +24,21 @@ const bodyParser = require('body-parser');
 const app = express();
 const db = admin.database();
 
+app.use(express.json());
 //app.use(express.static("public"))
  //app.use(bodyParser.text());
-app.use(bodyParser.text({ type: '*/*' }));
-app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.disable("x-powered-by");
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.disable("x-powered-by");
 
-app.get('/', (req, res) => {
+app.get('/', (res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
 });
 
 app.post('/api', (req, res) => {
- const personData = req.body;
-// if (!personData || !personData.name) {
-  //  return res.status(500).json({ msg: 'Name field is required' });
-// }
 // const rawBody = req.body;
 // JSON.parse(rawBody);
-  const { name } = personData;
+  const { name } = req.body;
  // const { value } = req.body;
 
 
@@ -64,7 +60,7 @@ app.post('/api', (req, res) => {
 
       // Create a new person with the new ID
       const newPersonRef = personsRef.child(id);
-      newPersonRef.set({ id, name }, (error) => {
+      newPersonRef.set({ name }, (error) => {
     if (error) {
       console.error('Firebase Error:', error);
       return res.status(500).json({ error: 'Error adding person' });
