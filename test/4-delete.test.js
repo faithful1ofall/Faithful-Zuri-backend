@@ -23,4 +23,16 @@ describe('DELETE Operation', () => {
       });
   });
 
+  it('should delete a person based on name', (done) => {
+    // Replace 'Mark Updated' with the actual name you want to delete
+    chai
+      .request(app)
+      .delete('/api/Mark%20Updated') // Specify the DELETE route with the person's name
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.equal('All matching persons deleted successfully based on name');
+        done();
+      });
+  });
 });

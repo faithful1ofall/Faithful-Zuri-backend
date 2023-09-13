@@ -8,7 +8,7 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('READ/GET Operation', () => {
-  it('should retrieve data using the GET request', (done) => {
+  it('should retrieve data using the GET All request', (done) => {
     chai
       .request(app)
       .get('/api') // Specify the GET route you want to test
@@ -34,7 +34,7 @@ describe('READ/GET Operation', () => {
   });
 
   it('should retrieve data using the GET request based on name', (done) => {
-    // Replace 'John Doe' with the actual name you want to search for
+    // Replace 'Mark Essien' with the actual name you want to search for
     chai
       .request(app)
       .get('/api/Mark%20Essien') // Specify the GET route with the person's name

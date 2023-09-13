@@ -7,7 +7,7 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('UPDATE/PUT/PATCH Operation', () => {
+describe('UPDATE/PUT/PATCH Operation based on ID', () => {
   it('should update a person\'s information', (done) => {
     // Replace this with the actual person's ID you want to update
     const personIdToUpdate = 1;
@@ -24,4 +24,17 @@ describe('UPDATE/PUT/PATCH Operation', () => {
       });
   });
 
+  it('should update a person\'s information based on name', (done) => {
+    // Replace 'Mark Essien' with the actual name you want to update
+    chai
+      .request(app)
+      .put('/api/Mark%20Essien') // Specify the UPDATE route with the person's name
+      .send({ name: 'Mark Updated' }) // Replace with the updated data you want to send
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.equal('All matching persons updated successfully based on name');
+        done();
+      });
+  });
 });
