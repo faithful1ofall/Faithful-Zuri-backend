@@ -5,7 +5,7 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe('CREATE/POST Operations', () => {
+describe('CRUD Operations', () => {
   it('should add a new person', (done) => {
     chai
       .request(app)
