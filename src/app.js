@@ -31,7 +31,7 @@ app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.disable("x-powered-by");
 
-app.get('/', (res) => {
+app.get('/', (req, res) => {
   res.send('Welcome to the Zuri Faithfuls backend');
 });
 
@@ -60,7 +60,7 @@ app.post('/api', (req, res) => {
 
       // Create a new person with the new ID
       const newPersonRef = personsRef.child(id);
-      newPersonRef.set({ name }, (error) => {
+      newPersonRef.set({ id, name }, (error) => {
     if (error) {
       console.error('Firebase Error:', error);
       return res.status(500).json({ error: 'Error adding person' });
