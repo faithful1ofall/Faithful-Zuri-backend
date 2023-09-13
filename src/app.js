@@ -249,8 +249,8 @@ app.delete('/api/:input', (req, res) => {
         });
       }
     });
-  }
-});
+ // }
+// });
 
 
 app.get('/api/task1', (req, res) => {
