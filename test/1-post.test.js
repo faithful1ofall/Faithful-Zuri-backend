@@ -10,7 +10,7 @@ describe('CREATE/POST Operations', () => {
     chai
       .request(app)
       .post('/api')
-      .send({ name: "Mark Essien" })
+      .send({ name: `Mark Essien ${Math.random()*100}` })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(201);
