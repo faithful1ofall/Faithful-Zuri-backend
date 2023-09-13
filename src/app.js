@@ -27,7 +27,7 @@ const db = admin.database();
 //app.use(express.static("public"))
  //app.use(bodyParser.text());
 app.use(bodyParser.text({ type: '*/*' }));
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
 //app.disable("x-powered-by");
 
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api', (req, res) => {
- const personData = req.body;
+ const personData = JSON.parse(req.body);
  if (!personData || !personData.name) {
     return res.status(500).json({ msg: 'Name field is required' });
  }
