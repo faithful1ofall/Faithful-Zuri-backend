@@ -195,8 +195,8 @@ app.put('/api/:input', (req, res) => {
         });
       }
     });
-  }
-});
+//  }
+// });
 
 // DELETE - Delete a person by Input
 app.delete('/api/:input', (req, res) => {
